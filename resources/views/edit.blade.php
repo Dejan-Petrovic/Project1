@@ -8,23 +8,22 @@
 </head>
 <body>
 
-
 <h3>Edit Task</h3>
 <br>
-<form method="POST" action="/edit/{{$task->id}}">
+<form method="POST" action="/update/{{$task->id}}">
     @csrf
     <div>
         <label>Title</label>
-        <input type="text" name="title" placeholder="Title..." class="form-control" value="{{old('name')}}" />
+        <input type="text" name="title" placeholder="Title..." value="{{$task->title}}" class="form-control" />
     </div>
     <div>
     <br>
-        <textarea class="form-control" name="description" placeholder="Description">{{old('description')}}</textarea>
+        <textarea class="form-control" name="description" placeholder="Description">{{$task->description}}</textarea>
     </div>
     <br>
     <div>
         <label>Due Date</label>
-        <input type="date" name="due_date">
+        <input type="date" name="due_date" value="{{$task->due_date}}">
     </div>
     <br>
     <div>

@@ -13,13 +13,14 @@
 <br>
 <form action="/addtask" method="POST">
     @csrf
+
     <div>
         <label>Title</label>
-        <input type="text" name="title" placeholder="Title..." class="form-control" value="{{old('name')}}" />
+        <input type="text" name="title" placeholder="Title..." class="form-control" />
     </div>
     <div>
         <br>
-        <textarea class="form-control" name="description" placeholder="Description">{{old('description')}}</textarea>
+        <textarea class="form-control" name="description" placeholder="Description"></textarea>
     </div>
     <br>
     <div>

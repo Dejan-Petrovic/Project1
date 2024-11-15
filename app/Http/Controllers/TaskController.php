@@ -6,6 +6,8 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
+
+
 {
     public function index(Request $request)
     {
@@ -30,15 +32,30 @@ class TaskController extends Controller
         return redirect()->back();
     }
 
-    public function edit(Request $req)
+    public function edit(Request $request)
     {
-        $task = Task::find($req->id);
-        $task->update([
-            'title' => $req->title,
-            'description' => $req -> description,
-            'due_date' => $req->due_date,
+        $id=$request->id;
+        $task=Task::find($id);
+
+        return view('edit')->with('task', $task);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'due_date' => 'required|date',
         ]);
 
-        return redirect()->back();
+        $task = Task::find($id);
+
+        $task->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'due_date' => $validated['due_date'],
+        ]);
+
+        return redirect()->route('index')->with('success', 'Task updated successfully!');
     }
 }

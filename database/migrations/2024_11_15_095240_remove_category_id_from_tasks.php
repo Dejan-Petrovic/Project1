@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->integer('category_id')->after('completed_status')->default(0)->change();
+
         });
     }
 
@@ -21,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('tasks', function (Blueprint $table) {
+            //
+        });
     }
 };
