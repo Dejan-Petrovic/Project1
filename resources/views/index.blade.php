@@ -7,12 +7,62 @@
     <title>Document</title>
 </head>
 <body>
+
+
 <h3>Create Task</h3>
 <br>
+<form action="/addtask" method="POST">
+    @csrf
     <div>
-        <a href="{{url('tasks/create')}}" class="btn btn-primary">Add Task</a>
+        <label>Title</label>
+        <input type="text" name="title" placeholder="Title..." class="form-control" value="{{old('name')}}" />
     </div>
-
+    <div>
+        <br>
+        <textarea class="form-control" name="description" placeholder="Description">{{old('description')}}</textarea>
+    </div>
+    <br>
+    <div>
+        <label>Due Date</label>
+        <input type="date" name="due_date">
+    </div>
+    <br>
+    <div>
+        <button type="submit" class="btn btn-primary">CREATE</button>
+    </div>
 </form>
+<br>
+<h3>Tasks List</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Due date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (count($task) > 0)
+        @foreach ($task as $tasks)
+            <tr>
+                <th>{{ $tasks->id }}</th>
+                <th>{{ $tasks->title }}</th>
+                <th>{{ $tasks->description }}</th>
+                <th>{{ $tasks->due_date }}</th>
+                <th><a href="/edit/{{ $tasks->id }}" class="btn btn-primary">Edit</a>
+                    <a href="/delete/{{ $tasks->id }}" class="btn btn-danger">Delete</a>
+                </th>
+            </tr>
+        @endforeach
+    @else
+        <tr>
+            <th>No Data</th>
+        </tr>
+    @endif
+    </tbody>
+</table>
+</div>
+
 </body>
 </html>

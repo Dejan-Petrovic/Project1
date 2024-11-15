@@ -7,30 +7,38 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('index');
+        $task = Task::all();
+        return view('index')->with('task', $task);
     }
 
-    public function create()
+    public function add(Request $request)
     {
-        return view('create');
+        $task = new Task;
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->due_date = $request->due_date;
+        $task->save();
+        return redirect()->back();
     }
 
-    public function store(Request $request)
+    public function delete(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:255|string',
-            'description' => 'required|string',
-            'due_date' => 'required|date',
+        $task = Task::find($request->id);
+        $task->delete();
+        return redirect()->back();
+    }
+
+    public function edit(Request $req)
+    {
+        $task = Task::find($req->id);
+        $task->update([
+            'title' => $req->title,
+            'description' => $req -> description,
+            'due_date' => $req->due_date,
         ]);
 
-        Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'due_date' => $request->due_date
-        ]);
-
-        return redirect('tasks/create')->with('status', 'Task created successfully.');
+        return redirect()->back();
     }
 }

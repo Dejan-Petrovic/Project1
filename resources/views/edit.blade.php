@@ -8,21 +8,16 @@
 </head>
 <body>
 
-<div>
-@if (session('status'))
-    <div class="alert alert-success"> {{session('status')}}
-    </div>
-@endif
-</div>
 
-<h3>Create Task</h3>
+<h3>Edit Task</h3>
 <br>
-<form action="{{url('tasks/create')}}" method="POST">
+<form method="POST" action="/edit/{{$task->id}}">
     @csrf
     <div>
         <label>Title</label>
         <input type="text" name="title" placeholder="Title..." class="form-control" value="{{old('name')}}" />
     </div>
+    <div>
     <br>
         <textarea class="form-control" name="description" placeholder="Description">{{old('description')}}</textarea>
     </div>
@@ -33,7 +28,7 @@
     </div>
     <br>
     <div>
-        <a href="{{url('tasks')}}" class="btn btn-primary">SAVE</a>
+        <button type="submit" class="btn btn-primary">Update</button>
     </div>
 
 </form>

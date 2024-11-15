@@ -3,10 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 
-Route::get('/', function () {
-    return view('index');
-});
 
-Route::get('tasks', [TaskController::class, 'index']);
-Route::get('tasks/create', [TaskController::class, 'create']);
-Route::post('tasks/create', [TaskController::class, 'store']);
+Route::get('/', [TaskController::class, 'index']);
+Route::post('/addtask', [TaskController::class, 'add']);
+Route::get('/delete/{id}', [TaskController::class, 'delete']);
+Route::get('/edit/{id}', [TaskController::class, 'edit']);
+Route::post('/update/{id}', [TaskController::class, 'update']);
