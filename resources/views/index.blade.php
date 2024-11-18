@@ -8,24 +8,43 @@
 </head>
 <body>
 
+@if(session('success'))
+    <p>{{(session('success'))}}</p>
+@endif
 
 <h3>Create Task</h3>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    @guest
+        <a href="/login" class="btn btn-primary">LOGIN</button></a>
+        <a href="/register" class="btn btn-primary">REGISTER</button></a>
+    @endguest
+
+        @auth
+            <form action="/logout" method="POST">
+                @csrf
+                <button class="btn btn-primary">LOG OUT</button></a>
+            </form>
+        @endauth
+</div>
 <br>
 <form action="/addtask" method="POST">
     @csrf
 
     <div>
         <label>Title</label>
-        <input type="text" name="title" placeholder="Title..." class="form-control" />
+        <input type="text" name="title" placeholder="Title..." class="form-control" required/>
+        @error('title') <span class="text-danger">{{ $message }}</span>@enderror
     </div>
     <div>
         <br>
-        <textarea class="form-control" name="description" placeholder="Description"></textarea>
+        <textarea class="form-control" name="description" placeholder="Description" required></textarea>
+        @error('description') <span class="text-danger">{{ $message }}</span>@enderror
     </div>
     <br>
     <div>
         <label>Due Date</label>
-        <input type="date" name="due_date">
+        <input type="date" name="due_date"><br>
+        @error('due_date') <span class="text-danger">{{ $message }}</span>@enderror
     </div>
     <br>
     <div>
@@ -41,18 +60,23 @@
         <th scope="col">Title</th>
         <th scope="col">Description</th>
         <th scope="col">Due date</th>
+        <th scope="col">Complete Status</th>
     </tr>
     </thead>
     <tbody>
-    @if (count($task) > 0)
-        @foreach ($task as $tasks)
+    @if (count($tasks) > 0)
+
+        <p>Total number of tasks: {{$tasks->total()}}</p>
+
+        @foreach ($tasks as $task)
             <tr>
-                <th>{{ $tasks->id }}</th>
-                <th>{{ $tasks->title }}</th>
-                <th>{{ $tasks->description }}</th>
-                <th>{{ $tasks->due_date }}</th>
-                <th><a href="/edit/{{ $tasks->id }}" class="btn btn-primary">Edit</a>
-                    <a href="/delete/{{ $tasks->id }}" class="btn btn-danger">Delete</a>
+                <th>{{ $task->id }}</th>
+                <th>{{ $task->title }}</th>
+                <th>{{ $task->description }}</th>
+                <th>{{ $task->due_date }}</th>
+                <th>{{ $task->completed_status }}</th>
+                <th><a href="/edit/{{ $task->id }}" class="btn btn-primary">Edit</a>
+                    <a href="/delete/{{ $task->id }}" class="btn btn-danger">Delete</a>
                 </th>
             </tr>
         @endforeach
@@ -63,6 +87,10 @@
     @endif
     </tbody>
 </table>
+</div>
+
+<div>
+{{$tasks->links()}}
 </div>
 
 </body>
