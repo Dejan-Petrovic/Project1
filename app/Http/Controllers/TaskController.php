@@ -15,7 +15,8 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all('id', 'name');
-        $tasks = QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('due_date')])->paginate(5);
+        $tasks = QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('completed_status')])
+            ->allowedSorts('due_date')->paginate(5);
         return view('index')->with('tasks', $tasks)->with('categories', $categories);
     }
 

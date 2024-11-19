@@ -11,70 +11,75 @@
 @if(session('success'))
     <p>{{(session('success'))}}</p>
 @endif
+<div class="card container mt-5">
+    <h3>Create Task</h3>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            @guest
+                <a href="/login" class="btn btn-primary">LOGIN</button></a>
+                <a href="/register" class="btn btn-primary">REGISTER</button></a>
+            @endguest
 
-<h3>Create Task</h3>
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    @guest
-        <a href="/login" class="btn btn-primary">LOGIN</button></a>
-        <a href="/register" class="btn btn-primary">REGISTER</button></a>
-    @endguest
+            @auth
+                <form action="/logout" method="POST">
+                    @csrf
+                    <button class="btn btn-primary">LOG OUT</button></a>
+                </form>
+            @endauth
+        </div>
 
-        @auth
-            <form action="/logout" method="POST">
-                @csrf
-                <button class="btn btn-primary">LOG OUT</button></a>
-            </form>
-        @endauth
-</div>
-<br>
-<form action="/add" method="POST">
-    @csrf
-
-    <div>
-        <label>Title</label>
-        <input type="text" name="title" placeholder="Title..." class="form-control" required/>
-        @error('title') <span class="text-danger">{{ $message }}</span>@enderror
-    </div>
-    <div>
         <br>
-        <textarea class="form-control" name="description" placeholder="Description" required></textarea>
-        @error('description') <span class="text-danger">{{ $message }}</span>@enderror
-    </div>
-    <br>
-    <div>
-        <label for="category">Select Category:</label>
-        <select name="category_id" id="category" required>
-            <option value="" disabled selected>-- Select a Category --</option>
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <br>
-    <div>
-        <label>Due Date</label>
-        <input type="date" name="due_date"><br>
-        @error('due_date') <span class="text-danger">{{ $message }}</span>@enderror
-    </div>
-    <br>
-    <div>
-        <button type="submit" class="btn btn-primary">CREATE</button>
-    </div>
-</form>
-<div class="container mt-5">
-    <h3>Filter Tasks by Due Date</h3>
+        <form action="/add" method="POST">
+            @csrf
+
+            <div>
+                <label>Title</label>
+                    <input type="text" name="title" placeholder="Title..." class="form-control" required/>
+                        @error('title') <span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+            <br>
+            <div>
+                <textarea class="form-control" name="description" placeholder="Description" required></textarea>
+                    @error('description') <span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+            <br>
+            <div>
+                <label for="category">Select Category:</label>
+                <select name="category_id" id="category" required>
+                        <option value="" disabled selected>-- Select a Category --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <br>
+            <div>
+                <label>Due Date</label>
+                <input type="date" name="due_date"><br>
+                    @error('due_date') <span class="text-danger">{{ $message }}</span>@enderror
+            </div>
+            <br>
+            <div>
+                <button type="submit" class="btn btn-primary">CREATE</button>
+            </div>
+        </form>
+</div>
+<div class="card container mt-5" >
+    <h3>Filter Tasks by completed status</h3>
 
     <form action="{{ route('index') }}" method="GET">
         @csrf
         <div class="mb-3">
-            <label for="due_date" class="form-label">Select Due Date</label>
-            <input type="date" name="filter[due_date]" id="due_date" value="{{ request('due_date') }}" class="form-control">
+            <label for="due_date" class="form-label">Select completed status</label>
+            <input type="text" name="filter[completed_status]" id="completed_status" placeholder="1 or 0" value="{{ request('completed_status') }}" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
 
-    <br>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{{ route('index') }}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+
 <br>
+<div class="card container mt-5" >
 <h3>Tasks List</h3>
 <table class="table table-bordered">
     <thead>
@@ -91,6 +96,11 @@
     @if (count($tasks) > 0)
 
         <p>Total number of tasks: {{$tasks->total()}}</p>
+
+        <div class="sorting mb-3">
+            <a href="{{ route('index', array_merge(request()->query(), ['sort' => '-due_date'])) }}"
+               class="btn btn-link">Sort by Due Date (Descending)</a>
+        </div>
 
         @foreach ($tasks as $task)
             <tr>
@@ -114,8 +124,7 @@
     </tbody>
 </table>
 </div>
-
-<div>
+<div class="container mt-5" >
 {{$tasks->links()}}
 </div>
 

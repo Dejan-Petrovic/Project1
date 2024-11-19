@@ -17,7 +17,6 @@
         <label>Email</label>
         <input type="email" name="email" placeholder="Add Email" id="email" class="form-control" value="{{old('email')}}" required/>
         @error('title') <span class="text-danger">{{ $message }}</span>@enderror
-    </div>
     <br>
     <div>
         <label>Password</label>
