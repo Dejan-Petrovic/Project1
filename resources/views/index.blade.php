@@ -27,7 +27,7 @@
         @endauth
 </div>
 <br>
-<form action="/addtask" method="POST">
+<form action="/add" method="POST">
     @csrf
 
     <div>
@@ -39,6 +39,16 @@
         <br>
         <textarea class="form-control" name="description" placeholder="Description" required></textarea>
         @error('description') <span class="text-danger">{{ $message }}</span>@enderror
+    </div>
+    <br>
+    <div>
+        <label for="category">Select Category:</label>
+        <select name="category_id" id="category" required>
+            <option value="" disabled selected>-- Select a Category --</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
     </div>
     <br>
     <div>
@@ -60,6 +70,7 @@
         <th scope="col">Title</th>
         <th scope="col">Description</th>
         <th scope="col">Due date</th>
+        <th scope="col">Category</th>
         <th scope="col">Complete Status</th>
     </tr>
     </thead>
@@ -74,12 +85,14 @@
                 <th>{{ $task->title }}</th>
                 <th>{{ $task->description }}</th>
                 <th>{{ $task->due_date }}</th>
+                <th>{{ $task->category }}</th>
                 <th>{{ $task->completed_status }}</th>
                 <th><a href="/edit/{{ $task->id }}" class="btn btn-primary">Edit</a>
                     <a href="/delete/{{ $task->id }}" class="btn btn-danger">Delete</a>
                 </th>
             </tr>
         @endforeach
+
     @else
         <tr>
             <th>No Data</th>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,11 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
+        $categories = Category::all('id', 'name');
         $tasks = Task::paginate(5);
-        return view('index')->with('tasks', $tasks);
+        return view('index')->with('tasks', $tasks)->with('categories', $categories);
     }
+
 
     public function add(Request $request)
     {
