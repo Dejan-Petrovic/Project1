@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 
@@ -13,7 +15,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all('id', 'name');
-        $tasks = Task::paginate(5);
+        $tasks = QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('due_date')])->paginate(5);
         return view('index')->with('tasks', $tasks)->with('categories', $categories);
     }
 

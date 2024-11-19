@@ -61,6 +61,19 @@
         <button type="submit" class="btn btn-primary">CREATE</button>
     </div>
 </form>
+<div class="container mt-5">
+    <h3>Filter Tasks by Due Date</h3>
+
+    <form action="{{ route('index') }}" method="GET">
+        @csrf
+        <div class="mb-3">
+            <label for="due_date" class="form-label">Select Due Date</label>
+            <input type="date" name="filter[due_date]" id="due_date" value="{{ request('due_date') }}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <br>
 <br>
 <h3>Tasks List</h3>
 <table class="table table-bordered">
