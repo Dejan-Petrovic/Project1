@@ -80,53 +80,53 @@
 
 <br>
 <div class="card container mt-5" >
-<h3>Tasks List</h3>
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-        <th scope="col">Due date</th>
-        <th scope="col">Category</th>
-        <th scope="col">Complete Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    @if (count($tasks) > 0)
-
-        <p>Total number of tasks: {{$tasks->total()}}</p>
-
-        <div class="sorting mb-3">
-            <a href="{{ route('index', array_merge(request()->query(), ['sort' => '-due_date'])) }}"
-               class="btn btn-link">Sort by Due Date (Descending)</a>
-        </div>
-
-        @foreach ($tasks as $task)
+    <h3>Tasks List</h3>
+        <table class="table table-bordered">
+            <thead>
             <tr>
-                <th>{{ $task->id }}</th>
-                <th>{{ $task->title }}</th>
-                <th>{{ $task->description }}</th>
-                <th>{{ $task->due_date }}</th>
-                <th>{{ $task->category }}</th>
-                <th>{{ $task->completed_status }}</th>
-                <th><a href="/edit/{{ $task->id }}" class="btn btn-primary">Edit</a>
-                    <a href="/delete/{{ $task->id }}" class="btn btn-danger">Delete</a>
-                </th>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Due date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Complete Status</th>
             </tr>
-        @endforeach
+            </thead>
+        <tbody>
+        @if (count($tasks) > 0)
 
-    @else
-        <tr>
-            <th>No Data</th>
-        </tr>
-    @endif
-    </tbody>
-</table>
-</div>
-<div class="container mt-5" >
-{{$tasks->links()}}
-</div>
+            <p>Total number of tasks: {{$tasks->total()}}</p>
+
+            <div class="sorting mb-3">
+                <a href="{{ route('index', array_merge(request()->query(), ['sort' => '-due_date'])) }}"
+                   class="btn btn-link">Sort by Due Date (Descending)</a>
+            </div>
+
+            @foreach ($tasks as $task)
+                <tr>
+                    <th>{{ $task->id }}</th>
+                    <th>{{ $task->title }}</th>
+                    <th>{{ $task->description }}</th>
+                    <th>{{ $task->due_date }}</th>
+                    <th>{{ $task->category }}</th>
+                    <th>{{ $task->completed_status }}</th>
+                    <th><a href="/edit/{{ $task->id }}" class="btn btn-primary">Edit</a>
+                        <a href="/delete/{{ $task->id }}" class="btn btn-danger">Delete</a>
+                    </th>
+                </tr>
+            @endforeach
+
+        @else
+            <tr>
+                <th>No Data</th>
+            </tr>
+        @endif
+        </tbody>
+    </table>
+    </div>
+    <div class="container mt-5" >
+    {{$tasks->links()}}
+    </div>
 
 </body>
 </html>
