@@ -20,6 +20,7 @@ class TaskController extends Controller
         $taskService = new TaskService();
         $tasks = $taskService->getTasks($request->get('pagination', 5));
 
+
         return view('index')->with('tasks', $tasks)->with('categories', $categories);
     }
 
@@ -30,14 +31,21 @@ class TaskController extends Controller
             return redirect('/login');
         }
 
+        $categories = Category::all();
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'due_date' => 'required|date',
+            'category_id' => 'required|exists:categories,id'
         ]);
+
+
 
         $taskService = new TaskService();
         $task = $taskService->createTask($validated);
+
+        $task->categories()->attach($validated['category_id']);// $task je prikljucen na relation categories iz modela
 
         return redirect()->route('index')->with('success', 'Task created successfully!');
     }
@@ -49,7 +57,6 @@ class TaskController extends Controller
         }
 
         $taskService = new TaskService();
-
 
         $taskService->deleteTask($id);
 

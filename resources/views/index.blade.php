@@ -108,7 +108,7 @@
                     <th>{{ $task->title }}</th>
                     <th>{{ $task->description }}</th>
                     <th>{{ $task->due_date }}</th>
-                    <th>{{ $task->category }}</th>
+                    <th>{{ $task->categories->first()->name ?? 'No Category' }}</th>
                     <th>{{ $task->completed_status }}</th>
                     <th><a href="/edit/{{ $task->id }}" class="btn btn-primary">Edit</a>
                         <a href="/delete/{{ $task->id }}" class="btn btn-danger">Delete</a>

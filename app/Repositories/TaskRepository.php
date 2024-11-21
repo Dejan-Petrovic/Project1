@@ -13,7 +13,10 @@ class TaskRepository implements Interfaces\RepositoryInterface
     public function getAll(int $pagination)
     {
         return QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('completed_status')])
+            ->with('categories')
             ->allowedSorts('due_date')->paginate($pagination);
+
+
     }
 
     public function create(array $data)

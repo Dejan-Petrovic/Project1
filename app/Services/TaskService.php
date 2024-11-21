@@ -19,6 +19,7 @@ class TaskService
 
     public function createTask(array $data)
     {
+
         $taskRepository = new TaskRepository(); //ovo je instanciranje - pravljenje novog objekta
         $task = $taskRepository->create($data);
 
