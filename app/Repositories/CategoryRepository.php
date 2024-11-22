@@ -8,9 +8,13 @@ use App\Repositories\Interfaces\RepositoryInterface;
 class CategoryRepository implements Interfaces\RepositoryInterface
 {
 
-    public function getAll(int $pagination)
+    public function getAll(int $pagination = 0)
     {
-        return Category::paginate($pagination);
+        if ($pagination == 0) {
+            return Category::with('tasks')->get();
+        } else {
+            return Category::with('tasks')->paginate($pagination);
+        }
     }
 
     public function create(array $data)

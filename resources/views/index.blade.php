@@ -8,25 +8,46 @@
 </head>
 <body>
 
-@if(session('success'))
-    <p>{{(session('success'))}}</p>
-@endif
-<div class="card container mt-5">
-    <h3>Create Task</h3>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+<div class="topnav">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Create Tasks</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Tasks(current) <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="category">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="user">Users</a>
+                </li>
+            </ul>
+        </div>
+        <div>
             @guest
-                <a href="/login" class="btn btn-primary">LOGIN</button></a>
-                <a href="/register" class="btn btn-primary">REGISTER</button></a>
+                <a href="/login" class="btn btn-success ">LOGIN</button></a>
+                <a href="/register" class="btn btn-success">REGISTER</button></a>
             @endguest
 
             @auth
                 <form action="/logout" method="POST">
                     @csrf
-                    <button class="btn btn-primary">LOG OUT</button></a>
+                    <button class="btn btn-danger">LOG OUT</button></a>
                 </form>
             @endauth
         </div>
+    </nav>
+</div>
 
+@if(session('success'))
+    <p>{{(session('success'))}}</p>
+@endif
+<div class="card container mt-5">
+    <h3>Create Task</h3>
         <br>
         <form action="/add" method="POST">
             @csrf
@@ -98,7 +119,7 @@
             <p>Total number of tasks: {{$tasks->total()}}</p>
 
             <div class="sorting mb-3">
-                <a href="{{ route('index', array_merge(request()->query(), ['sort' => '-due_date'])) }}"
+                <a href="{{ route('index', array_merge(request()->query(), ['sort' => 'asc'])) }}"
                    class="btn btn-link">Sort by Due Date (Descending)</a>
             </div>
 
@@ -123,7 +144,7 @@
         @endif
         </tbody>
     </table>
-    </div>
+</div>
     <div class="container mt-5" >
     {{$tasks->links()}}
     </div>

@@ -6,7 +6,7 @@ use App\Models\Task;
 
 interface RepositoryInterface
 {
-    public function getAll(int $pagination);
+    public function getAll(int $pagination = 0);
 
     public function create(array $data);
 

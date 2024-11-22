@@ -14,6 +14,17 @@ Route::get('/edit/{id}', [TaskController::class, 'edit']);
 Route::post('/update/{id}', [TaskController::class, 'update']);
 Route::get('/register', [CategoryController::class, 'index']);
 
+//category
+Route::get('/category', [CategoryController::class, 'index'])->name('category');
+Route::post('/add', [CategoryController::class, 'add']);
+Route::get('/delete/{id}', [CategoryController::class, 'delete']);
+Route::get('/edit-category/{id}', [CategoryController::class, 'edit']);
+Route::post('/update/{id}', [CategoryController::class, 'update']);
+
+Route::get('/user', function () {
+    return view('user');
+});
+
 // Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);

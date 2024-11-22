@@ -10,12 +10,17 @@ use Spatie\QueryBuilder\QueryBuilder;
 class TaskRepository implements Interfaces\RepositoryInterface
 {
 
-    public function getAll(int $pagination)
+    public function getAll(int $pagination = 0)
     {
-        return QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('completed_status')])
-            ->with('categories')
-            ->allowedSorts('due_date')->paginate($pagination);
 
+        $queryBuilder = QueryBuilder::for(Task::class)->allowedFilters([AllowedFilter::exact('completed_status')])
+            ->with('categories')
+            ->allowedSorts('due_date');
+        if($pagination == 0) {
+            return $queryBuilder->get();
+        } else {
+            return $queryBuilder->paginate($pagination);
+        }
 
     }
 

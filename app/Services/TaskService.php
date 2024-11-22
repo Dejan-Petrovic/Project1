@@ -9,41 +9,37 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskService
 {
-    public function getTasks(int $pagination)
+    private TaskRepository $taskRepository;
+    public function __construct(TaskRepository $taskRepository)
     {
-        $taskRepository = new TaskRepository();
-        $tasks = $taskRepository->getAll($pagination);
-
+        $this->taskRepository = $taskRepository;
+    }
+    public function getTasks(int $pagination = 0)
+    {
+        $tasks = $this->taskRepository->getAll($pagination);
         return $tasks;
     }
 
     public function createTask(array $data)
     {
 
-        $taskRepository = new TaskRepository(); //ovo je instanciranje - pravljenje novog objekta
-        $task = $taskRepository->create($data);
-
+        $task = $this->taskRepository->create($data);
         return $task;
     }
 
     public function getByIdTask(int $id)
     {
-        $taskRepository = new TaskRepository();
-        $task = $taskRepository->getById($id);
-
+        $task = $this->taskRepository->getById($id);
         return $task;
     }
 
     public function updateTask(int $id, array $data)
     {
-        $taskRepository = new TaskRepository();
-        $task = $taskRepository->update($id, $data);
-
+        $task = $this->taskRepository->update($id, $data);
         return $task;
     }
     public function deleteTask(int $id)
     {
-        $taskRepository = new TaskRepository();
-        $taskRepository->delete($id);
+        $this->taskRepository->delete($id);
     }
 }

@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Services\CategoryService;
+use App\Services\TaskService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct(private readonly TaskService $taskService)
+    {}
     public function index(Request $request)
     {
+
+        $sort = $request->query('sort', 'asc');
+
         $categoryService = new categoryService();
         $categories = $categoryService->getCategories($request->get('pagination', 5));
-
-        return view('index');
+        $tasks = $this->taskService->getTasks();
+        return view('category')->with('categories', $categories)->with('tasks', $tasks);
     }
 
     public function add(Request $request)
@@ -21,12 +27,15 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'task_id' => 'required|exists:tasks,id'
         ]);
 
         $categoryService = new categoryService();
         $category = $categoryService->createCategory($validated);
 
-        return view('index');
+        $category->tasks()->attach($validated['task_id']);
+
+        return redirect()->route('category')->with('success', 'Category created succesfully!');
     }
 
     public function delete(Request $request, int $id)
@@ -45,7 +54,7 @@ class CategoryController extends Controller
         $category = $categoryService->getByIdCategory($id);
 
 
-        return view('edit')->with('task', $task);
+        return view('edit-category')->with('category', $category);
     }
 
     public function update(Request $request, $id)
@@ -59,6 +68,6 @@ class CategoryController extends Controller
 
         $category = $categoryService->updateCategory($id, $validated);
 
-        return redirect()->route('index')->with('success', 'Category updated successfully!');
+        return redirect()->route('category')->with('success', 'Category updated successfully!');
     }
 }

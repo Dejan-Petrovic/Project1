@@ -6,7 +6,7 @@ use App\Repositories\CategoryRepository;
 
 class CategoryService
 {
-    public function getCategories(int $pagination)
+    public function getCategories(int $pagination = 0)
     {
         $categoryRepository = new CategoryRepository();
         $categories = $categoryRepository->getAll($pagination);
@@ -34,6 +34,12 @@ class CategoryService
     {
         $categoryRepository = new CategoryRepository();
         $category = $categoryRepository->update($id, $data);
+    }
+
+    public function deleteCategory(int $id)
+    {
+        $categoryRepository = new CategoryRepository();
+        $category = $categoryRepository->delete($id);
     }
 
 }
